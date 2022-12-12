@@ -1,0 +1,48 @@
+using System;
+using System.Linq;
+using System.Text;
+float savings = float.Parse(Console.ReadLine());
+List<int> list = Console.ReadLine().Split(" ").Select(int.Parse).ToList();
+List<Int32> initial = new List<Int32>(list);
+string command = Console.ReadLine();
+List<int> price = initial.ToList();
+for(int i = 0; i < initial.Count; i++)
+{
+    price[i] *= 3;
+}
+while (command != "Hit it again, Gabsy!")
+{
+    int subtractNum = int.Parse(command);
+    for (int i = 0; i < list.Count; i++)
+    {
+        if(list[i] - subtractNum > 0)
+        {
+            list[i] -= subtractNum;
+        }
+        else if(list[i] - subtractNum <= 0 && savings >= price[i])
+        {
+            savings -= price[i];
+            list[i] = initial[i];
+        }
+        else if(price[i] - savings > 0 && list[i] - subtractNum <= 0)
+        {
+            if(i == list.Count)
+            {
+                list.RemoveAt(i);
+                price.RemoveAt(i);
+                initial.RemoveAt(i);
+                
+            }
+            else
+            {
+                list.RemoveAt(i);
+                price.RemoveAt(i);
+                initial.RemoveAt(i);
+                i--;
+            }
+        }
+    }
+    command = Console.ReadLine();
+}
+Console.WriteLine(String.Join(" ", list));
+Console.WriteLine($"Gabsy has {savings:F2}lv.");
